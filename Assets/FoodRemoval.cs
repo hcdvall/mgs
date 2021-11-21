@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class FoodRemoval : MonoBehaviour
 {
-    void OnTriggerEnter2D(Collider2D coll) 
+    void OnTriggerEnter2D(Collider2D collision) 
     {
-        if (coll.tag == "Tail") 
+        if (collision.tag == "Food") 
         {
             Debug.Log("Food spawned on tail and is therefore removed");
-            Destroy(coll.gameObject);
+            Destroy(collision.gameObject);
         }
     }
 }

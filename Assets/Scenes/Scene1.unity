@@ -740,6 +740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tailPrefab: {fileID: 3849222637980750300, guid: c886c996d5250774f8101e1620207283, type: 3}
   canvas: {fileID: 1788279000}
+  powerUp: 0
 --- !u!212 &501464071
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1003,7 +1004,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 6951726118226925474, guid: 785f87d3cf118df419c0bb610846c9a8, type: 3}
-  spawnTime: 1
+  powerUpPrefab: {fileID: 6951726118226925474, guid: 12f2b18e0d675e340983c30cad75b85c, type: 3}
+  foodSpawnTime: 3
+  powerUpSpawnTime: 15
   borderTop: {fileID: 2061785782}
   borderBottom: {fileID: 1832001444}
   borderLeft: {fileID: 30628877}

@@ -2,25 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     Vector2 dir = Vector2.right;
     private string currentDir = "Rightwards"; 
-    List<Transform> tail = new List<Transform>();
+    LinkedList<GameObject> tail = new LinkedList<GameObject>();
+    //LinkedListNode test = new ;
     bool ate = false;
     public GameObject tailPrefab;
     public GameObject canvas;
+    private float initialSpeed = 0.1f;
+    public float powerUp = 0.0f;
+    private bool powerUpChange = false;
     
 
     void Start()
     {
-        InvokeRepeating("Stepping", 0.1f, 0.1f);
+        InvokeRepeating("Stepping", initialSpeed, initialSpeed);
     }
 
     void Update()
     {
+        if (powerUpChange == true) 
+        {
+            InvokeRepeating("Stepping", initialSpeed + powerUp, initialSpeed + powerUp);
+            powerUpChange = false;
+        }
         SetDirection();
     }
 
@@ -60,77 +69,89 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //private void Stepping()
-    //{
-    //    this.transform.Translate(dir);
-    //}
-
-
-    void OnTriggerEnter2D(Collider2D coll) 
+    void OnTriggerEnter2D(Collider2D collision) 
     {
-        // Food?
-        if (coll.tag == "Food") 
+        if (collision.tag == "Food") 
         {
-            //collisionInfo.gameObject.tag == "Enemy"
-            // Get longer in next Move call
             ate = true;
-        
-            // Remove the Food
-            Destroy(coll.gameObject);
+            Destroy(collision.gameObject);
         }
-        else if (coll.tag == "Tail")
+        else if (collision.tag == "Tail" | collision.tag == "Border")
         {
-            Debug.Log("CUT SNAKE");
-             Destroy(coll.gameObject);
+           CancelInvoke();
+           canvas.SetActive(true);
         }
-        else if (coll.tag == "Border")
+        else if (collision.tag == "PowerUp")
         {
-            canvas.SetActive(true);
+            powerUp += 0.1f;
+            powerUpChange = true;
+            Destroy(collision.gameObject);
         }
     }
 
+        /*
+        I tried out two approaches of updating the tail of the snake
+        In both cases I utilize the space/position that the head leaves behind after moving
+            
+            1. The Stepping procedure starts with saving  the current position of the head
+            2. Then the head takes a step (translate) in a set direction (leaving its previous position up for grabs)
+            3. If the head collides with food, the boolean "ate" will be set to true
+                - A new tail object is instantiated from a prefab on the empty space the head leaved behind
+                - The instantiated tail object is added to the first position in a LinkedList called tail
+                - Boolean "ate" is set to false again
+            
+            There is no need to move around objects of the tail (update positions) when food is added to the length of the snake
+            But every step when the head does not collide with food the linked list should be updated to move with the head
+            
+            4. If no collision is observed, I check if the tail is "empty" or not
+            5. If the tail contains tail objects I've tried two approaches:
+                A. Changing the position of the first object in the list to the heads old position (the gap)
+                   And then change the position of all other objects to the position before them
+                B. Changing the last objects position to the heads old position
+                   And move it to the first position in the linked list
+                   Then remove the last object in the list
 
-    void Stepping() {
-        // Save current position (gap will be here)
-        Vector2 v = transform.position;
-
-        // Move head into new direction (now there is a gap)
-        transform.Translate(dir);
-
-        // Ate something? Then insert new Element into gap
-        if (ate) {
-            // Load Prefab into the world
-            GameObject g =(GameObject)Instantiate(tailPrefab,
-                                                v,
-                                                Quaternion.identity);
-
-            // Keep track of it in our tail list
-            tail.Insert(0, g.transform);
-
-            // Reset the flag
+            Approach B is very neat and effective. 
+            But I preferred the idea to keep track of every object in approach A, 
+            in case further abilities would be added to tail objects
+        */
+    void Stepping() 
+    {
+        Vector2 currentPlayerPos = this.transform.position;
+        this.transform.Translate(dir);
+    
+        if (ate) 
+        {
+            GameObject tailGo = Instantiate(tailPrefab, currentPlayerPos, Quaternion.identity);
+            tailGo.GetComponent<Renderer>().material.color =
+                new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f),1f);
+            tail.AddFirst(tailGo.gameObject);
             ate = false;
         }
-        // Do we have a Tail?
         else if (tail.Count > 0) {
-            // Move last Tail Element to where the Head was
-            tail.Last().position = v;
+            Vector2 nextPos  = new Vector2();
+            Vector2 tailPos  = new Vector2();
+            int count = 0;
+            foreach ( GameObject go in tail ) 
+            {   
+                if (count == 0)
+                {
+                    nextPos = go.transform.position; 
+                    go.transform.position = currentPlayerPos;
+                    count += 1;
+                }
+                else 
+                {
+                    tailPos = go.transform.position;
+                    go.transform.position = nextPos;
+                    nextPos = tailPos;
+                    count += 1;
+                }  
+            }
 
-            // Add to front of list, remove from the back
-            tail.Insert(0, tail.Last());
-            tail.RemoveAt(tail.Count-1);
-        }
-        
-        
-        
-        for (int i=0; i < tail.Count; i++)
-        {
-            //Debug.Log(string.Join(", ", tail));
-        }
-
-        foreach(Transform i in tail)
-        {
-            
-        }
-        
+            //tail.Last().transform.position = currentPlayerPos;
+            //tail.AddFirst(tail.Last());
+            //tail.RemoveLast();
+        } 
     }
 }
