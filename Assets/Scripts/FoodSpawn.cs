@@ -13,12 +13,18 @@ public class FoodSpawn : MonoBehaviour
     public Transform borderLeft;
     public Transform borderRight;
 
+
+    public Event foodDrop;
+    ObjectPooler objectPooler;
     void Start()
     {
-        StartCoroutine(FoodSpawner());
+        //StartCoroutine(FoodSpawner());
+        InvokeRepeating("FoodSpawner", foodSpawnTime, foodSpawnTime);
         StartCoroutine(PowerUpSpawner());
     }
 
+
+    /*
     IEnumerator FoodSpawner()
     {
         while(true)
@@ -29,6 +35,15 @@ public class FoodSpawn : MonoBehaviour
                 int y = (int)Random.Range(borderBottom.position.y+1, borderTop.position.y-1);
                 Instantiate(foodPrefab, new Vector2(x, y), Quaternion.identity);
             }
+    }*/
+
+    void FoodSpawner()
+    {
+        int x = (int)Random.Range(borderLeft.position.x+1, borderRight.position.x-1);
+        int y = (int)Random.Range(borderBottom.position.y+1, borderTop.position.y-1);
+        ObjectPooler.Instance.SpawnFromPool("Food", new Vector3(x, y, 0), Quaternion.identity); 
+
+        foodDrop.Occured(new Vector3(x, y, 0)); 
     }
 
     IEnumerator PowerUpSpawner()

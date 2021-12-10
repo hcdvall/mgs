@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     bool ate = false;
     public GameObject tailPrefab;
     public GameObject canvas;
-    private float initialSpeed = 0.1f;
+    private float initialSpeed = 0.3f;
     public float powerUp = 0.0f;
     private bool powerUpChange = false;
     
@@ -154,4 +154,5 @@ public class PlayerMovement : MonoBehaviour
             //tail.RemoveLast();
         } 
     }
+
 }
