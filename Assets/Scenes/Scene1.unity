@@ -537,7 +537,7 @@ MonoBehaviour:
   pools:
   - tag: Food
     prefab: {fileID: 6951726118226925474, guid: 785f87d3cf118df419c0bb610846c9a8, type: 3}
-    size: 10
+    size: 100
 --- !u!4 &376126048
 Transform:
   m_ObjectHideFlags: 0

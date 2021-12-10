@@ -9,33 +9,37 @@ public class EnemyMovement : MonoBehaviour
     private Pathfinding pathfinding;
     public Transform target;
     public List<Node> thePath;
-    delegate List<Node> Pathfinder(Vector3 startPos, Vector3 targetPo);
-    Pathfinder pathfinder;
+    //delegate List<Node> Pathfinder(Vector3 startPos, Vector3 targetPo);
+    //Pathfinder pathfinder;
     public GameObject AStar;
     public GameObject tailPrefab;
     LinkedList<GameObject> tail = new LinkedList<GameObject>();
     bool ate = false;
-    private List<Node> foodLocations;
+    private List<Vector3> foodLocations;
     private Vector3 closestFoodPosition;
+
+    private GameObject[] foods;
 
     void Start()
     {
+        Debug.Log("SHEEEEEEY!");
         InvokeRepeating("Stepping", 0.3f, 0.3f);
         //Debug.Log(pathfinding.CurrentBestPath);
+        thePath = pathfinding.FindPath(this.transform.position, target.position);
     }
 
     void Awake() 
     {
         pathfinding = AStar.GetComponent<Pathfinding>();
         //pathfinder = pathfinding.FindPath;
-        thePath = pathfinding.FindPath(this.transform.position, target.position);
+        //thePath = pathfinding.FindPath(this.transform.position, target.position);
         
     }
 
 
 	void Update() 
     {
-        thePath = pathfinding.FindPath(this.transform.position, target.position);
+        //thePath = pathfinding.FindPath(this.transform.position, target.position);
         //thePath = pathfinder(this.transform.position, target.position);
         //thePath = pathfinder?.Invoke(this.transform.position, target.position);
 	}
@@ -78,7 +82,7 @@ public class EnemyMovement : MonoBehaviour
         return tMin;
     }
 
-    void Stepping()
+    public void Stepping()
     {
         Vector2 currentEnemyPos = this.transform.position;
         // Move seeker to the first position in the path
@@ -121,11 +125,16 @@ public class EnemyMovement : MonoBehaviour
 
     public void FoodDropped(Vector3 pos)
     {
-        foodLocations.Add(pos);
-        //closestFoodPosition = FindClosestFood(foodLocations);
+        foodLocations = new List<Vector3>();
+        foods = GameObject.FindGameObjectsWithTag("Food");
+        foreach (GameObject food in foods)
+            foodLocations.Add(food.transform.position);
 
-        //thePath = pathfinding.FindPath(this.transform.position, target.position);
-        Debug.Log("Food Dropped at ");// + foodLocations.Count);
+        closestFoodPosition = FindClosestFood(foodLocations);
+
+        thePath = pathfinding.FindPath(this.transform.position, closestFoodPosition);
+        //Debug.Log("Path length: " + thePath.Count);
+        //Debug.Log("Food Dropped at " + closestFoodPosition);
     }
 
 }
