@@ -22,27 +22,14 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("SHEEEEEEY!");
         InvokeRepeating("Stepping", 0.3f, 0.3f);
-        //Debug.Log(pathfinding.CurrentBestPath);
         thePath = pathfinding.FindPath(this.transform.position, target.position);
     }
 
     void Awake() 
     {
         pathfinding = AStar.GetComponent<Pathfinding>();
-        //pathfinder = pathfinding.FindPath;
-        //thePath = pathfinding.FindPath(this.transform.position, target.position);
-        
     }
-
-
-	void Update() 
-    {
-        //thePath = pathfinding.FindPath(this.transform.position, target.position);
-        //thePath = pathfinder(this.transform.position, target.position);
-        //thePath = pathfinder?.Invoke(this.transform.position, target.position);
-	}
 
     void OnTriggerEnter2D(Collider2D collision) 
     {
@@ -85,9 +72,7 @@ public class EnemyMovement : MonoBehaviour
     public void Stepping()
     {
         Vector2 currentEnemyPos = this.transform.position;
-        // Move seeker to the first position in the path
         this.transform.position = thePath.First().worldPosition;
-        //Remove the first element in the path
         thePath.RemoveAt(0);
 
         if (ate) 
@@ -133,8 +118,6 @@ public class EnemyMovement : MonoBehaviour
         closestFoodPosition = FindClosestFood(foodLocations);
 
         thePath = pathfinding.FindPath(this.transform.position, closestFoodPosition);
-        //Debug.Log("Path length: " + thePath.Count);
-        //Debug.Log("Food Dropped at " + closestFoodPosition);
     }
 
 }
