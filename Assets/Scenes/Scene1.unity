@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 501464073}
   - component: {fileID: 501464070}
   - component: {fileID: 501464074}
+  - component: {fileID: 501464075}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -789,6 +790,7 @@ MonoBehaviour:
   tailPrefab: {fileID: 3849222637980750300, guid: c886c996d5250774f8101e1620207283, type: 3}
   canvas: {fileID: 1788279000}
   powerUp: 0
+  FoodEaten: {fileID: 11400000, guid: b55f0f717498685439c0a61b71fe148a, type: 2}
 --- !u!212 &501464071
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -903,6 +905,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &501464075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501464069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5892ab5ecb48bc640ba75428643612b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gEvent: {fileID: 11400000, guid: b55f0f717498685439c0a61b71fe148a, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1712100577}
+        m_TargetAssemblyTypeName: EnemyMovement, Assembly-CSharp
+        m_MethodName: PathRecalculation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &678580707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,7 +1444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1457021031
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1562,8 +1592,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712100574}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1585,6 +1615,7 @@ MonoBehaviour:
   target: {fileID: 501464072}
   AStar: {fileID: 837472253}
   tailPrefab: {fileID: 3849222637980750300, guid: c886c996d5250774f8101e1620207283, type: 3}
+  closestFoodPosition: {x: 0, y: 0, z: 0}
 --- !u!50 &1712100578
 Rigidbody2D:
   serializedVersion: 4
@@ -1650,8 +1681,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1712100577}
         m_TargetAssemblyTypeName: EnemyMovement, Assembly-CSharp
-        m_MethodName: FoodDropped
-        m_Mode: 0
+        m_MethodName: PathRecalculation
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

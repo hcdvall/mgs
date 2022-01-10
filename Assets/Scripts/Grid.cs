@@ -31,7 +31,7 @@ public class Grid : MonoBehaviour
                 //bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 bool walkable = !(Physics2D.OverlapCircle(worldPoint, nodeRadius, unwalkableMask));
                 grid[x,y] = new Node(walkable, worldPoint, x, y);
-                Debug.Log(walkable);
+                //Debug.Log(walkable);
             }
         }
     }

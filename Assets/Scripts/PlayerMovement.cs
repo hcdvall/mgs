@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     private float initialSpeed = 0.3f;
     public float powerUp = 0.0f;
     private bool powerUpChange = false;
+
+    public Event FoodEaten;
     
 
     void Start()
@@ -123,8 +125,6 @@ public class PlayerMovement : MonoBehaviour
         if (ate) 
         {
             GameObject tailGo = Instantiate(tailPrefab, currentPlayerPos, Quaternion.identity);
-            tailGo.GetComponent<Renderer>().material.color =
-                new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f),1f);
             tail.AddFirst(tailGo.gameObject);
             ate = false;
         }

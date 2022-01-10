@@ -24,6 +24,4 @@ public class Event : ScriptableObject
 			elisteners[i].OnEventOccurs(pos);
 		}
 	}
-
-
 }
