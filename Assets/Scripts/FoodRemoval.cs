@@ -8,7 +8,7 @@ public class FoodRemoval : MonoBehaviour
     {
         if (collision.tag == "Food") 
         {
-            Debug.Log("Food spawned on tail and is therefore removed");
+            Debug.Log("Food spawned on food and is therefore removed");
             Destroy(collision.gameObject);
         }
     }
