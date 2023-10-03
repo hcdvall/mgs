@@ -1,6 +1,4 @@
 # mgs
-Henrik Sedvall
-
 Expanding my Snake project from the last course in data structures and algorithms.
 Recently an enemy with pathfinding was added.
 
